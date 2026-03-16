@@ -4,19 +4,18 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class DistanceMatrix {
-    public static JsonObject getJSONRequest(String origins, String destinations) throws IOException, InterruptedException {
+    public static JsonObject getJSONRequest(String origin, String destination) throws IOException, InterruptedException {
         String key = "hSDDUzoJ33JfbRdRDqaiLwoC4qEAkh5OxNFaTcJidQMOgcfHeQRdtC0sWbiyMtq1";
 
         String url = "https://api.distancematrix.ai/maps/api/distancematrix/json" +
-                "?origins=" + java.net.URLEncoder.encode(origins, "UTF-8") +
-                "&destinations=" + java.net.URLEncoder.encode(destinations, "UTF-8") +
+                "?origin=" + java.net.URLEncoder.encode(origin, "UTF-8") +
+                "&destination=" + java.net.URLEncoder.encode(destination, "UTF-8") +
                 "&key=" + key;
 
         HttpClient client = HttpClient.newHttpClient();
@@ -33,8 +32,6 @@ public class DistanceMatrix {
 
         return root.getAsJsonArray("rows").get(0).getAsJsonObject().getAsJsonArray("elements").get(0).getAsJsonObject();
     }
-
-
 
     public static String getTimeAsString() throws IOException, InterruptedException {
         JsonObject response = DistanceMatrix.getJSONRequest("London SW1A 1AA,United Kingdom", "71 Newton Road Great Barr Birmingham B43 6AD,United Kingdom");
