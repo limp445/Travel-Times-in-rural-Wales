@@ -1,0 +1,6 @@
+.mainBox {
+    -fx-background-color: lightblue;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-border-color: lightgrey;
+}
