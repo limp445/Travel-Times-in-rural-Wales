@@ -13,10 +13,13 @@ public class DistanceMatrix {
     public static JsonObject getJSONRequest(String origin, String destination) throws IOException, InterruptedException {
         String key = "hSDDUzoJ33JfbRdRDqaiLwoC4qEAkh5OxNFaTcJidQMOgcfHeQRdtC0sWbiyMtq1";
 
-        String url = "https://api.distancematrix.ai/maps/api/distancematrix/json" +
-                "?origin=" + java.net.URLEncoder.encode(origin, "UTF-8") +
-                "&destination=" + java.net.URLEncoder.encode(destination, "UTF-8") +
-                "&key=" + key;
+        String url = "https://api.distancematrix.ai/maps/api/distancematrix/json"
+                + "?origins=" + java.net.URLEncoder.encode(origin, "UTF-8")
+                + "&destinations=" + java.net.URLEncoder.encode(destination, "UTF-8")
+                + "&mode=driving"
+                + "&departure_time=now"
+                + "&traffic_model=best_guess"
+                + "&key=" + key;
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
