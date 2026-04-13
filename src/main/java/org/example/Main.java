@@ -31,6 +31,32 @@ public class Main extends Application {
         webView.setZoom(1.0);
         String url = getClass().getResource("/index.html").toExternalForm();
         engine.load(url);
+        //add destination pt1
+
+        //add Destination pt1
+        VBox addDestination = new VBox(new Label("A---B"), new ComboBox<String>(FXCollections.observableList(welshCounties)),new Button("Enter"));
+        addDestination.getStyleClass().add("addDestination");
+        addDestination.setVisible(false);
+        addDestination.setAlignment(Pos.CENTER);
+        //add destination pt2
+        addDest2 = new VBox(new Label("A---B"), new ComboBox<String>(FXCollections.observableList(welshCounties)),new Button("Enter"));
+        addDest2.setVisible(false);
+        addDest2.setAlignment(Pos.CENTER);
+        addDestination.getChildren().get(2).setOnMousePressed(event -> {
+            addDestination.setVisible(false);
+            ComboBox<String> cb = (ComboBox<String>) addDestination.getChildren().get(1);
+            userCounty = cb.getValue();
+            addDest2.getChildren().clear();
+            try {
+                addDest2.getChildren().addAll(new Label("Choose Destination"), new ComboBox<String>(FXCollections.observableList(Destination.getDestinationsByCountyCsv(userCounty))), new Button("Enter"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            addDest2.setVisible(true);
+            addDest2.setAlignment(Pos.CENTER);
+            addDest2.getStyleClass().add("addDestination");
+        });
+
         //Map
 
         //Top Menu
