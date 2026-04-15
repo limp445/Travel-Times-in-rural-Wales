@@ -43,7 +43,7 @@ public class Main extends Application {
         WebView webView = new WebView();
         WebEngine engine = webView.getEngine();
         webView.setZoom(1.0);
-        String url = getClass().getResource("/index.html").toExternalForm();
+        String url = Objects.requireNonNull(getClass().getResource("/index.html")).toExternalForm();
         engine.load(url);
         //add destination pt1
 
