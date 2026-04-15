@@ -19,8 +19,9 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
 
-import java.awt.*;
-import java.net.URI;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 public class Main extends Application {
