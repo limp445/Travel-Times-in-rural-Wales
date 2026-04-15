@@ -125,6 +125,31 @@ public class Main extends Application {
                 new MenuItem("Set Origin"),
                 new MenuItem("Find Quickest Visit route"),
                 new MenuItem("Graph Data"));
+        Menu Trafficmenu = new Menu("Traffic");
+        if(DistanceMatrix.traffic){
+            Trafficmenu.getItems().addAll(new MenuItem("Traffic ON"));
+        }else {
+            Trafficmenu.getItems().addAll(new MenuItem("Traffic OFF"));
+        }
+        Menu MeasureMenu = new Menu("Change Unit of Measure");
+        MeasureMenu.getItems().addAll(
+                new MenuItem("Change to Miles"),
+                new MenuItem("Change to kilometres")
+        );
+        TopMenu.getItems().getFirst().setOnAction(event -> {addDestination.setVisible(true);});
+        TopMenu.getItems().get(2).setOnAction(event -> {originVbox.setVisible(true);});
+        Trafficmenu.getItems().getFirst().setOnAction(event -> {
+            DistanceMatrix.changeTraffic();
+            if(DistanceMatrix.traffic){
+                Trafficmenu.getItems().getFirst().setText("Traffic ON");
+            }else {
+                Trafficmenu.getItems().getFirst().setText("Traffic OFF");
+            }
+        });
+        MenuBar TopMenuBar = new MenuBar();
+        TopMenuBar.getMenus().addAll(TopMenu, Trafficmenu, MeasureMenu);
+        //TopMenuBar.setMouseTransparent(true);// not needed here
+        //Hbox for add destination
 
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(TopMenu);
