@@ -152,8 +152,13 @@ public class Main extends Application {
 
 
         //StackPane
-        StackPane stackPane = new StackPane(webView, menuBar);
-        StackPane.setAlignment(menuBar, Pos.TOP_CENTER);
+        StackPane stackPane = new StackPane(webView, TopMenuBar, addDestination, addDest2, originVbox, userDestinations);
+        StackPane.setAlignment(TopMenuBar, Pos.TOP_CENTER);
+        StackPane.setAlignment(userDestinations, Pos.TOP_RIGHT);
+        addDestination.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        addDest2.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        originVbox.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        userDestinations.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
 
 
