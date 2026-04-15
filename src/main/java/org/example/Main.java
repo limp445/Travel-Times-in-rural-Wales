@@ -25,8 +25,20 @@ import java.util.Collections;
 import java.util.Objects;
 
 public class Main extends Application {
+    private String userCounty;
+    private String userPlace;
+    private VBox addDest2;
+    private HBox userDestinations = new HBox();
+    private Double originLat;
+    private Double originLng;
     @Override
     public void start(Stage stage) throws Exception {
+        //Setting variables
+        ArrayList<String> welshCounties = new ArrayList<>();
+        Collections.addAll(welshCounties, "Anglesey", "Blaenau Gwent", "Bridgend", "Caerphilly", "Cardiff", "Carmarthenshire", "Ceredigion", "Conwy", "Denbighshire", "Flintshire", "Gwynedd", "Merthyr Tydfil", "Monmouthshire", "Neath Port Talbot", "Newport", "Pembrokeshire", "Powys", "Rhondda Cynon Taf", "Swansea", "Torfaen", "Vale of Glamorgan", "Wrexham");
+        //Destination.loadDestinationsFromCSV();// loads only once
+        userDestinations.setVisible(false);
+
         //Map
         WebView webView = new WebView();
         WebEngine engine = webView.getEngine();
