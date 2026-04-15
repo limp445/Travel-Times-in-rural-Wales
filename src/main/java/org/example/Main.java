@@ -101,7 +101,21 @@ public class Main extends Application {
             });
         });
 
-        //Map
+        //Set origin
+        VBox originVbox = new VBox(new Label("Type the address"), new TextField("Latitude"), new TextField("Longitude"), new Button("Enter"));
+        originVbox.setAlignment(Pos.CENTER);
+        originVbox.setVisible(false);
+        originVbox.getStyleClass().add("addDestination");
+        originVbox.getChildren().get(3).setOnMousePressed(event -> {
+            originVbox.setVisible(false);
+            TextField latTextF = (TextField) originVbox.getChildren().get(1);
+            originLat = Double.parseDouble(latTextF.getText());
+            TextField lngTextF = (TextField) originVbox.getChildren().get(2);
+            originLng = Double.parseDouble(lngTextF.getText());
+            engine.executeScript("placeMarker("+ originLat + "," + originLng + ")");
+        });
+
+
 
         //Top Menu
         Menu TopMenu = new Menu("Functions");
