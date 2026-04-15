@@ -10,6 +10,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class DistanceMatrix {
+    public static boolean traffic = true;
+    public static void changeTraffic(){
+        traffic = !traffic;
+    }
     public static JsonObject getJSONRequest(String origin, String destination) throws IOException, InterruptedException {
         String key = "hSDDUzoJ33JfbRdRDqaiLwoC4qEAkh5OxNFaTcJidQMOgcfHeQRdtC0sWbiyMtq1";
 
