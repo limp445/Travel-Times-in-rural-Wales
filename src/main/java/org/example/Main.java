@@ -148,13 +148,7 @@ public class Main extends Application {
         });
         MenuBar TopMenuBar = new MenuBar();
         TopMenuBar.getMenus().addAll(TopMenu, Trafficmenu, MeasureMenu);
-        //TopMenuBar.setMouseTransparent(true);// not needed here
-        //Hbox for add destination
-
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(TopMenu);
-        //menuBar.setMouseTransparent(true);// not needed here
-
+        
 
 
         //StackPane
