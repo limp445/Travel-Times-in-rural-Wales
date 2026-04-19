@@ -48,4 +48,34 @@ public class DistanceMatrix {
         JsonObject response = DistanceMatrix.getJSONRequest("London SW1A 1AA,United Kingdom", "Oxford,United Kingdom");
         return response.getAsJsonObject("distance").get("text").getAsString();
     }
+    public static Pair<Double, Double> addressToLatLng(String address) throws IOException, InterruptedException {
+        Pair<Double, Double> LatLngPair;
+        String key2 = "Mg0A04b5TpNTxXHsUGFkeZl7XC8DYosywmJ3jRmtacwYIHaoqHJlblxwKg8aUpLp";
+        //String traffic = """&departure_time=now" + "&traffic_model=best_guess""";
+        String url = "https://api.distancematrix.ai/maps/api/geocode/json"
+                + "?address=" + java.net.URLEncoder.encode(address, StandardCharsets.UTF_8)
+                + "&key=" + key2;
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+
+        HttpResponse<String> response =
+                client.send(request, HttpResponse.BodyHandlers.ofString());
+        String json = response.body();
+
+        JsonObject root = JsonParser.parseString(json).getAsJsonObject();
+
+        JsonObject element = root.getAsJsonArray("result")
+                .get(0).getAsJsonObject()
+                .getAsJsonObject("geometry")
+                .getAsJsonObject("location");
+
+        double lat = element.get("lat").getAsDouble();
+        double lng = element.get("lng").getAsDouble();
+        LatLngPair = new Pair<>(lat, lng);
+        return LatLngPair;
+    }
 }
