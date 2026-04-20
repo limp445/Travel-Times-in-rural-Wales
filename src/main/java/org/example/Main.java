@@ -124,6 +124,32 @@ public class Main extends Application {
                 noOriginError.getChildren().getLast().setOnMousePressed(event1 -> noOriginError.setVisible(false));
             }
         });
+        //remove destination
+        removeBox = new VBox(new Label("Choose Destination"), new ComboBox<String>(removeDestList), new Button("Enter"));
+        removeBox.setVisible(false);
+        removeBox.setAlignment(Pos.CENTER);
+        removeBox.getStyleClass().add("addDestination");
+        removeBox.getChildren().get(2).setOnMousePressed(event -> {
+            removeBox.setVisible(false);
+            ComboBox<String> cb = (ComboBox<String>) removeBox.getChildren().get(1);
+            String userRemove = cb.getValue();//try the combobox as destination
+            Destination removeDest = Destination.stringToDest(userRemove);
+            Destination.destinationlist.remove(removeDest);
+            //func to complete userlist onscreen would be usefule
+            try {
+                Pair<Double, Double> removeLatLng = DistanceMatrix.addressToLatLng(removeDest.getDestinationType());
+                engine.executeScript(
+                        "removeMarkerByLatLng("
+                                + removeLatLng.getKey() + ", "
+                                + removeLatLng.getValue() + ")"
+                );
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            updateScreenList(engine);
+
+
+        });
 
         //Set origin
         VBox originVbox = new VBox(new Label("Type the address"), new TextField("Latitude"), new TextField("Longitude"), new Button("Enter"));
