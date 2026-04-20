@@ -162,7 +162,13 @@ public class Main extends Application {
             originLat = Double.parseDouble(latTextF.getText());
             TextField lngTextF = (TextField) originVbox.getChildren().get(2);
             originLng = Double.parseDouble(lngTextF.getText());
-            engine.executeScript("placeMarker("+ originLat + "," + originLng + ")");
+            engine.executeScript(
+                    "placeMarker("
+                            + originLat + ", "
+                            + originLng+ ", '"
+                            + "Your Origin" + "')"
+            );
+
         });
 
 
