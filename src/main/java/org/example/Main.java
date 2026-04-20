@@ -69,7 +69,7 @@ public class Main extends Application {
         //Setting variables
         ArrayList<String> welshCounties = new ArrayList<>();
         Collections.addAll(welshCounties, "Anglesey", "Blaenau Gwent", "Bridgend", "Caerphilly", "Cardiff", "Carmarthenshire", "Ceredigion", "Conwy", "Denbighshire", "Flintshire", "Gwynedd", "Merthyr Tydfil", "Monmouthshire", "Neath Port Talbot", "Newport", "Pembrokeshire", "Powys", "Rhondda Cynon Taf", "Swansea", "Torfaen", "Vale of Glamorgan", "Wrexham");
-        //Destination.loadDestinationsFromCSV();// loads only once
+        Destination.loadDestinationsFromCSV();// loads only once
         userDestinations.setVisible(false);
 
         //Map
