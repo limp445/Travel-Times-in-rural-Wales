@@ -118,6 +118,11 @@ public class Main extends Application {
                     //maybe function rest boxes are blank
                     updateScreenList(engine);
             });
+            } else {
+                addDestination.setVisible(false);
+                noOriginError.setVisible(true);
+                noOriginError.getChildren().getLast().setOnMousePressed(event1 -> noOriginError.setVisible(false));
+            }
         });
 
         //Set origin
