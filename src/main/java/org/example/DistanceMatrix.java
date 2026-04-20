@@ -2,6 +2,7 @@ package org.example;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.net.URI;
