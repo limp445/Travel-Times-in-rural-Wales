@@ -31,6 +31,39 @@ public class Main extends Application {
     private HBox userDestinations = new HBox();
     private Double originLat;
     private Double originLng;
+    private VBox noOriginError = new VBox();
+    private VBox removeBox = new VBox();
+    private ObservableList<String> removeDestList = FXCollections.observableArrayList();
+    public void updateScreenList(WebEngine engine){
+        VBox userDestinationsVbox = new VBox(10);
+        for (Destination destination : Destination.destinationlist) {
+            try {
+                VBox dest1 = new VBox(
+                        new Label(destination.getDestinationType()),
+                        new Label(DistanceMatrix.getTimeAsString(originLat, originLng, destination.getAddress())),
+                        new Label(DistanceMatrix.getDistanceAsString(originLat, originLng, destination.getAddress())));
+                dest1.getStyleClass().add("dest1");
+                userDestinationsVbox.getChildren().add(dest1);
+                Pair<Double, Double> LatLongPair = DistanceMatrix.addressToLatLng(destination.getDestinationType());
+                engine.executeScript(
+                        "placeMarker("
+                                + LatLongPair.getKey() + ", "
+                                + LatLongPair.getValue() + ", '"
+                                + destination.getDestinationType() + "')"
+                );
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        userDestinations.getChildren().clear();
+        userDestinations.getChildren().add(userDestinationsVbox);
+        userDestinations.setAlignment(Pos.TOP_RIGHT);
+        userDestinations.setPadding(new Insets(10));
+        userDestinations.setVisible(true);
+        userDestinations.setMouseTransparent(true);
+        userDestinations.getStyleClass().add("userDestinations");
+        removeDestList.setAll(Destination.getListToString());
+    }
     @Override
     public void start(Stage stage) throws Exception {
         //Setting variables
