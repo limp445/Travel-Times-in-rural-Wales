@@ -89,6 +89,11 @@ public class Main extends Application {
         addDest2 = new VBox(new Label("A---B"), new ComboBox<String>(FXCollections.observableList(welshCounties)),new Button("Enter"));
         addDest2.setVisible(false);
         addDest2.setAlignment(Pos.CENTER);
+        //error message set up
+        noOriginError = new VBox(new Label("Please choose an origin before adding destinations"), new Button("OK"));
+        noOriginError.setAlignment(Pos.CENTER);
+        noOriginError.getStyleClass().add("addDestination");
+        noOriginError.setVisible(false);
         addDestination.getChildren().get(2).setOnMousePressed(event -> {
             addDestination.setVisible(false);
             ComboBox<String> cb = (ComboBox<String>) addDestination.getChildren().get(1);
