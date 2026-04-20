@@ -216,6 +216,9 @@ public class Main extends Application {
         addDest2.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         originVbox.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         userDestinations.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        StackPane.setMargin(userDestinations, new Insets(50, 50, 0, 0));
+        noOriginError.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        removeBox.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
 
 
