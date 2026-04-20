@@ -26,21 +26,46 @@
 <div id="map"></div>
 
 <script>
-    var map = L.map('map', {zoomControl: false}).setView([51.505, -0.09], 13);
+    var map = L.map('map', {zoomControl: false}).setView([52.349, -3.822], 8);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap'
     }).addTo(map);
+    map.on('dragend', () => {
+        map.eachLayer(layer => {
+            if (layer instanceof L.TileLayer) {
+                layer.redraw();
+            }
+        });
+    });//improvement on grey tiless but no work still, then alot better when changed to drag end
+
+
 
     L.control.zoom({
         position: 'bottomleft'
     }).addTo(map);
 
-    L.marker([51.505, -0.09])
-        .addTo(map)
-        .bindPopup('A')
-        .openPopup();
+    let markers = []; // store all markers
+
+    function placeMarker(lat, lng, address) {
+        const marker = L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup(address);
+
+        markers.push(marker);
+    }
+    function removeMarkerByLatLng(lat, lng) {
+        for (let i = 0; i < markers.length; i++) {
+            const pos = markers[i].getLatLng();
+
+            if (pos.lat === lat && pos.lng === lng) {
+                markers[i].remove();
+                markers.splice(i, 1);
+                break;
+            }
+        }
+    }
 </script>
 </body>
 </html>

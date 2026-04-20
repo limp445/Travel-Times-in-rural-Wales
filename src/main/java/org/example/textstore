@@ -1,29 +1,42 @@
-BorderPane root = new BorderPane();
-        VBox mainBox = new VBox(10);
-        VBox vBox1 = new VBox(
-            new Label("A---B"),
-            new Label(DistanceMatrix.getTimeAsString()),
-            new Label(DistanceMatrix.getDistanceAsString())
-        );
-        vBox1.getStyleClass().add("mainBox");
+    public static void main(String[] args) throws Exception {
+        double lat = 51.4816;
+        double lng = -3.1791;
+        String origins = lat + "," + lng;
+        String destinations = "Caerleon Rd Llanfrechfa Cwmbran";
+        String key = "hSDDUzoJ33JfbRdRDqaiLwoC4qEAkh5OxNFaTcJidQMOgcfHeQRdtC0sWbiyMtq1";
+        //String traffic = """&departure_time=now" + "&traffic_model=best_guess""";
+        String url = "https://api.distancematrix.ai/maps/api/distancematrix/json"
+                + "?origins=" + java.net.URLEncoder.encode(origins, StandardCharsets.UTF_8)
+                + "&destinations=" + java.net.URLEncoder.encode(destinations, StandardCharsets.UTF_8)
+                + "&mode=driving"
+                + "&departure_time=now"
+                + "&key=" + key;
 
-        VBox vBox2 = new VBox(
-                new Label("A---B"),
-                new Label(DistanceMatrix.getTimeAsString()),
-                new Label(DistanceMatrix.getDistanceAsString())
-        );
-        vBox2.getStyleClass().add("mainBox");
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
 
-        mainBox.getChildren().addAll(vBox1, vBox2);
-        mainBox.setAlignment(Pos.TOP_RIGHT);
-        HBox hBox = new HBox(mainBox);
-        hBox.setAlignment(Pos.TOP_RIGHT);
-        hBox.setPadding(new Insets(10));
-        root.setTop(hBox);
+        HttpResponse<String> response =
+                client.send(request, HttpResponse.BodyHandlers.ofString());
+        String json = response.body();
+
+        JsonObject root = JsonParser.parseString(json).getAsJsonObject();
+
+        JsonObject element = root.getAsJsonArray("rows").get(0).getAsJsonObject().getAsJsonArray("elements").get(0).getAsJsonObject();
+
+        int distanceMeters = element.getAsJsonObject("distance").get("value").getAsInt();
+
+        int durationSeconds = element.getAsJsonObject("duration_in_traffic").get("value").getAsInt();
+        String time = element.getAsJsonObject("duration_in_traffic").get("text").getAsString();// change to duration if not wanting traffic
+
+        System.out.println(distanceMeters);
+        System.out.println(durationSeconds);
+        System.out.println(secToHr(durationSeconds) + secToRemainMinutes(durationSeconds));
+        System.out.println(time);
 
 
-        Scene scene = new Scene(root, 400, 300);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
-        stage.setTitle("JavaFX 23 Example");
-        stage.setScene(scene);
-        stage.show();
+
+        System.out.println(response.body());
+    }

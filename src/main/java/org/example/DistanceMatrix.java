@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 
 public class DistanceMatrix {
     public static boolean traffic = true;
@@ -19,12 +20,12 @@ public class DistanceMatrix {
         String key = "hSDDUzoJ33JfbRdRDqaiLwoC4qEAkh5OxNFaTcJidQMOgcfHeQRdtC0sWbiyMtq1";
 
         String url = "https://api.distancematrix.ai/maps/api/distancematrix/json"
-                + "?origins=" + java.net.URLEncoder.encode(origin, "UTF-8")
-                + "&destinations=" + java.net.URLEncoder.encode(destination, "UTF-8")
+                + "?origins=" + java.net.URLEncoder.encode(origin, StandardCharsets.UTF_8)
+                + "&destinations=" + java.net.URLEncoder.encode(destination, StandardCharsets.UTF_8)
                 + "&mode=driving"
                 + "&departure_time=now"
                 + "&traffic_model=best_guess"
-                + "&key=" + key;
+                + "&key=" + key;//needs changine to include traffic
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -41,12 +42,16 @@ public class DistanceMatrix {
         return root.getAsJsonArray("rows").get(0).getAsJsonObject().getAsJsonArray("elements").get(0).getAsJsonObject();
     }
 
-    public static String getTimeAsString() throws IOException, InterruptedException {
-        JsonObject response = DistanceMatrix.getJSONRequest("London SW1A 1AA,United Kingdom", "71 Newton Road Great Barr Birmingham B43 6AD,United Kingdom");
-        return response.getAsJsonObject("duration").get("text").getAsString();
+    public static String getTimeAsString(double lat, double lng, String address) throws IOException, InterruptedException {
+        JsonObject response = DistanceMatrix.getJSONRequest(lat + "," + lng, address);
+        if (traffic){
+            return response.getAsJsonObject("duration_in_traffic").get("text").getAsString();
+        }else {
+            return response.getAsJsonObject("duration").get("text").getAsString();
+        }
     }
-    public static String getDistanceAsString() throws IOException, InterruptedException {
-        JsonObject response = DistanceMatrix.getJSONRequest("London SW1A 1AA,United Kingdom", "Oxford,United Kingdom");
+    public static String getDistanceAsString(double lat, double lng, String address) throws IOException, InterruptedException {
+        JsonObject response = DistanceMatrix.getJSONRequest(lat + "," + lng, address);
         return response.getAsJsonObject("distance").get("text").getAsString();
     }
     public static Pair<Double, Double> addressToLatLng(String address) throws IOException, InterruptedException {

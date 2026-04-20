@@ -1,12 +1,27 @@
-.mainBox {
-    -fx-background-color: lightblue;
+.userDestinations {
+    -fx-pref-height: 200;
+    -fx-pref-width: 175;
     -fx-padding: 10;
     -fx-spacing: 5;
-    -fx-border-color: lightgrey;
+    -fx-margin: 200 0 0 0;
+}
+.dest1 {
+    -fx-background-color: lightblue;
+    -fx-margin: 20 0 0 0;
+    -fx-pref-width: 175;
+    -fx-font-size: 18px;
 }
 .menu-bar{
     -fx-padding: 10 15;
 }
 .menu-bar .label{
     -fx-font-size: 16px;
+}
+.addDestination {
+    -fx-background-color: red;
+    -fx-pref-width: 100;
+    -fx-pref-height: 100;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-border-color: lightgrey;
 }

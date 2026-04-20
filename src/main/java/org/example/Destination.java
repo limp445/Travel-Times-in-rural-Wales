@@ -1,31 +1,35 @@
 package org.example;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Destination {
     private final String destinationType;
     private final String address;
     private final String countyName;
-    public ArrayList<Destination> destinationlist;
-    public ArrayList<Destination> destinationsCSV;
+    public static ArrayList<Destination> destinationlist = new ArrayList<>();
+    public static ArrayList<Destination> destinationsCSV = new ArrayList<>();
 
     public Destination(String destinationType, String address, String countyName) throws IOException {
         this.destinationType = destinationType;
         this.address = address;
         this.countyName = countyName;
-        destinationlist = new ArrayList<>();
-        destinationsCSV = new ArrayList<>();//just hospitals atm
-        BufferedReader br = new BufferedReader(new FileReader("Hospitals.csv"));
+    }
+    public static void loadDestinationsFromCSV() throws IOException {
+        InputStream is = Destination.class.getResourceAsStream("/Hospitals.csv");
+        if (is == null) {
+            throw new FileNotFoundException("Hospitals.csv not found in resources folder!");
+        }
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String line;
-        while ((line = br.readLine()) != null){
+
+        while ((line = br.readLine()) != null) {
             String[] data = line.split(",");
             destinationsCSV.add(new Destination(data[0], data[1], data[2]));
         }
     }
+
     public String getDestinationType() {
         return destinationType;
     }
@@ -36,26 +40,31 @@ public class Destination {
     public String getCountyName() {
         return countyName;
     }
-    public void newDestination(String destinationType, String address, String countyName) throws IOException {
-        Destination destination = new Destination(destinationType, address, countyName);
-        destinationlist.add(destination);
-    }
-    public void removeDestination(String destinationType, String address, String countyName){
-        for (Destination destination : destinationlist) {
-            if (destination.destinationType.equals(destinationType) && destination.address.equals(address) && destination.countyName.equals(countyName)) {
-                destinationlist.remove(destination);
-            }
-        }
-    }
 
-    public ArrayList<Destination> getDestinationsByCountyCsv(String countyName) throws IOException {
-        ArrayList<Destination> countyDestinations = new  ArrayList<>();
+    public static ArrayList<String> getDestinationsByCountyCsv(String countyName) throws IOException {
+        ArrayList<String> countyDestinations = new  ArrayList<>();
         for (Destination destinationCSV : destinationsCSV) {
             if (destinationCSV.getCountyName().equals(countyName)) {
-                countyDestinations.add(destinationCSV);
+                countyDestinations.add(destinationCSV.getDestinationType());
             }
         }
         return countyDestinations;
+    }
+    public static Destination stringToDest(String placeName){
+        Destination returnDest = null;
+        for (Destination destination : destinationsCSV) {
+            if (destination.getDestinationType().equals(placeName)) {
+                returnDest = destination;
+            }
+        }
+        return returnDest;
+    }
+    public static ArrayList<String> getListToString(){
+        ArrayList<String> list = new ArrayList<>();
+        for (Destination destination : destinationlist) {
+            list.add(destination.getDestinationType());
+        }
+        return list;
     }
 
 }
