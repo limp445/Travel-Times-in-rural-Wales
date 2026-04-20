@@ -95,47 +95,28 @@ public class Main extends Application {
         noOriginError.getStyleClass().add("addDestination");
         noOriginError.setVisible(false);
         addDestination.getChildren().get(2).setOnMousePressed(event -> {
-            addDestination.setVisible(false);
-            ComboBox<String> cb = (ComboBox<String>) addDestination.getChildren().get(1);
-            userCounty = cb.getValue();
-            addDest2.getChildren().clear();
-            try {
-                addDest2.getChildren().addAll(new Label("Choose Destination"), new ComboBox<String>(FXCollections.observableList(Destination.getDestinationsByCountyCsv(userCounty))), new Button("Enter"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            addDest2.setVisible(true);
-            addDest2.setAlignment(Pos.CENTER);
-            addDest2.getStyleClass().add("addDestination");
-            addDest2.getChildren().get(2).setOnMousePressed(event2 -> {
-                addDest2.setVisible(false);
-                ComboBox<String> cb2 = (ComboBox<String>) addDest2.getChildren().get(1);
-                Destination userDest = Destination.stringToDest(cb2.getValue());
-                Destination.destinationlist.add(userDest);
-                //new hbox / vbox// only dest needs origin and covert to latlong
-                //would need to be different eqch time ran
-                //maybe function rest boxes are blank
-                VBox userDestinationsVbox = new VBox(10);
-                for (Destination destination : Destination.destinationlist) {
-                    try {
-                        VBox dest1 = new VBox(
-                                new Label(userDest.getDestinationType()),
-                                new Label(DistanceMatrix.getTimeAsString(originLat, originLng, userDest.getAddress())),
-                                new Label(DistanceMatrix.getDistanceAsString(originLat, originLng, userDest.getAddress())));
-                        dest1.getStyleClass().add("dest1");
-                        userDestinationsVbox.getChildren().add(dest1);
-                    } catch (IOException | InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
+            if (originLat != null && originLng != null) {
+                addDestination.setVisible(false);
+                ComboBox<String> cb = (ComboBox<String>) addDestination.getChildren().get(1);
+                userCounty = cb.getValue();
+                addDest2.getChildren().clear();
+                try {
+                    addDest2.getChildren().addAll(new Label("Choose Destination"), new ComboBox<String>(FXCollections.observableList(Destination.getDestinationsByCountyCsv(userCounty))), new Button("Enter"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-                userDestinations.getChildren().clear();
-                userDestinations.getChildren().add(userDestinationsVbox);
-                userDestinations.setAlignment(Pos.TOP_RIGHT);
-                userDestinations.setPadding(new Insets(10));
-                userDestinations.setVisible(true);
-                userDestinations.setMouseTransparent(true);
-                userDestinations.getStyleClass().add("userDestinations");
-
+                addDest2.setVisible(true);
+                addDest2.setAlignment(Pos.CENTER);
+                addDest2.getStyleClass().add("addDestination");
+                addDest2.getChildren().get(2).setOnMousePressed(event2 -> {
+                    addDest2.setVisible(false);
+                    ComboBox<String> cb2 = (ComboBox<String>) addDest2.getChildren().get(1);
+                    Destination userDest = Destination.stringToDest(cb2.getValue());
+                    Destination.destinationlist.add(userDest);
+                    //new hbox / vbox// only dest needs origin and covert to latlong
+                    //would need to be different eqch time ran
+                    //maybe function rest boxes are blank
+                    updateScreenList(engine);
             });
         });
 
