@@ -205,7 +205,7 @@ public class Main extends Application {
         });
         MenuBar TopMenuBar = new MenuBar();
         TopMenuBar.getMenus().addAll(TopMenu, Trafficmenu, MeasureMenu);
-        
+
 
 
         //StackPane
