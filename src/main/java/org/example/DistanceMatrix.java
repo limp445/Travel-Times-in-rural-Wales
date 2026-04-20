@@ -50,6 +50,15 @@ public class DistanceMatrix {
             return response.getAsJsonObject("duration").get("text").getAsString();
         }
     }
+    public static Integer getTimeAsInt(double lat, double lng, String address) throws IOException, InterruptedException {
+        JsonObject response = DistanceMatrix.getJSONRequest(lat + "," + lng, address);
+        if (traffic){
+            return response.getAsJsonObject("duration_in_traffic").get("value").getAsInt();
+        }else {
+            return response.getAsJsonObject("duration").get("value").getAsInt();
+        }
+    }
+
     public static String getDistanceAsString(double lat, double lng, String address) throws IOException, InterruptedException {
         JsonObject response = DistanceMatrix.getJSONRequest(lat + "," + lng, address);
         return response.getAsJsonObject("distance").get("text").getAsString();
