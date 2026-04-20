@@ -176,7 +176,7 @@ public class Main extends Application {
         //Top Menu
         Menu TopMenu = new Menu("Functions");
         TopMenu.getItems().addAll(
-                new MenuItem("Add Destination"),
+                new MenuItem("Add Destination"),// marker colours are banded groups
                 new MenuItem("Remove Destination"),
                 new MenuItem("Set Origin"),
                 new MenuItem("Find Quickest Visit route"),
