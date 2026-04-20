@@ -193,6 +193,7 @@ public class Main extends Application {
                 new MenuItem("Change to kilometres")
         );
         TopMenu.getItems().getFirst().setOnAction(event -> {addDestination.setVisible(true);});
+        TopMenu.getItems().get(1).setOnAction(event -> {removeBox.setVisible(true);});
         TopMenu.getItems().get(2).setOnAction(event -> {originVbox.setVisible(true);});
         Trafficmenu.getItems().getFirst().setOnAction(event -> {
             DistanceMatrix.changeTraffic();
