@@ -49,6 +49,12 @@
     let markers = []; // store all markers
 
     function placeMarker(lat, lng, address) {
+        L.circleMarker([lat, lng], {
+            radius: 10,
+            color: "red",
+            fillColor: "red",
+            fillOpacity: 0.8
+        }).addTo(map);
         const marker = L.marker([lat, lng])
             .addTo(map)
             .bindPopup(address);

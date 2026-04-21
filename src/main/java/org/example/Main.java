@@ -20,6 +20,7 @@ import javafx.util.Pair;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -32,22 +33,24 @@ public class Main extends Application {
     private VBox noOriginError = new VBox();
     private VBox removeBox = new VBox();
     private ObservableList<String> removeDestList = FXCollections.observableArrayList();
+    private int numBands = 0;
     public void updateScreenList(WebEngine engine){
         VBox userDestinationsVbox = new VBox(10);
-        for (Destination destination : Destination.destinationlist) {
+        Destination.destinationlist.sort(Comparator.comparingInt(Pair::getValue));
+        for (Pair<Destination, Integer> destination : Destination.destinationlist) {
             try {
                 VBox dest1 = new VBox(
-                        new Label(destination.getDestinationType()),
-                        new Label(DistanceMatrix.getTimeAsString(originLat, originLng, destination.getAddress())),
-                        new Label(DistanceMatrix.getDistanceAsString(originLat, originLng, destination.getAddress())));
+                        new Label(destination.getKey().getDestinationType()),
+                        new Label(DistanceMatrix.getTimeAsString(originLat, originLng, destination.getKey().getAddress())),
+                        new Label(DistanceMatrix.getDistanceAsString(originLat, originLng, destination.getKey().getAddress())));
                 dest1.getStyleClass().add("dest1");
                 userDestinationsVbox.getChildren().add(dest1);
-                Pair<Double, Double> LatLongPair = DistanceMatrix.addressToLatLng(destination.getDestinationType());
+                Pair<Double, Double> LatLongPair = DistanceMatrix.addressToLatLng(destination.getKey().getDestinationType());
                 engine.executeScript(
                         "placeMarker("
                                 + LatLongPair.getKey() + ", "
                                 + LatLongPair.getValue() + ", '"
-                                + destination.getDestinationType() + "')"
+                                + destination.getKey().getDestinationType() + "')"
                 );
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
@@ -110,7 +113,11 @@ public class Main extends Application {
                     addDest2.setVisible(false);
                     ComboBox<String> cb2 = (ComboBox<String>) addDest2.getChildren().get(1);
                     Destination userDest = Destination.stringToDest(cb2.getValue());
-                    Destination.destinationlist.add(userDest);
+                    try {
+                        Destination.destinationlist.add(new Pair<>(userDest, DistanceMatrix.getTimeAsInt(originLat, originLng, userDest.getAddress())));
+                    } catch (IOException | InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     //new hbox / vbox// only dest needs origin and covert to latlong
                     //would need to be different eqch time ran
                     //maybe function rest boxes are blank
@@ -132,7 +139,11 @@ public class Main extends Application {
             ComboBox<String> cb = (ComboBox<String>) removeBox.getChildren().get(1);
             String userRemove = cb.getValue();//try the combobox as destination
             Destination removeDest = Destination.stringToDest(userRemove);
-            Destination.destinationlist.remove(removeDest);
+            try {
+                Destination.destinationlist.remove(new Pair<>(removeDest, DistanceMatrix.getTimeAsInt(originLat, originLng, removeDest.getAddress())));
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             //func to complete userlist onscreen would be usefule
             try {
                 Pair<Double, Double> removeLatLng = DistanceMatrix.addressToLatLng(removeDest.getDestinationType());
@@ -185,10 +196,13 @@ public class Main extends Application {
         }else {
             Trafficmenu.getItems().addAll(new MenuItem("Traffic OFF"));
         }
-        Menu MeasureMenu = new Menu("Change Unit of Measure");
+        Menu MeasureMenu = new Menu("Set Banded Groups");
         MeasureMenu.getItems().addAll(
-                new MenuItem("Change to Miles"),
-                new MenuItem("Change to kilometres")
+                new MenuItem("Reset Bands"),
+                new MenuItem("1"),
+                new MenuItem("2"),
+                new MenuItem("3"),
+                new MenuItem("4")
         );
         TopMenu.getItems().getFirst().setOnAction(event -> {addDestination.setVisible(true);});
         TopMenu.getItems().get(1).setOnAction(event -> {removeBox.setVisible(true);});

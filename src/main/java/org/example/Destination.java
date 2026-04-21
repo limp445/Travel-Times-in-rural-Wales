@@ -1,5 +1,7 @@
 package org.example;
 
+import javafx.util.Pair;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -7,7 +9,7 @@ public class Destination {
     private final String destinationType;
     private final String address;
     private final String countyName;
-    public static ArrayList<Destination> destinationlist = new ArrayList<>();
+    public static ArrayList<Pair<Destination, Integer>> destinationlist = new ArrayList<>();
     public static ArrayList<Destination> destinationsCSV = new ArrayList<>();
 
     public Destination(String destinationType, String address, String countyName) throws IOException {
@@ -61,8 +63,8 @@ public class Destination {
     }
     public static ArrayList<String> getListToString(){
         ArrayList<String> list = new ArrayList<>();
-        for (Destination destination : destinationlist) {
-            list.add(destination.getDestinationType());
+        for (Pair<Destination, Integer> destination : destinationlist) {
+            list.add(destination.getKey().getDestinationType());
         }
         return list;
     }
