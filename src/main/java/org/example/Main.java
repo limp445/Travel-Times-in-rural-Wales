@@ -201,6 +201,12 @@ public class Main extends Application {
                 Trafficmenu.getItems().getFirst().setText("Traffic OFF");
             }
         });
+        MeasureMenu.getItems().getFirst().setOnAction(e -> {numBands = 0;});
+        MeasureMenu.getItems().get(1).setOnAction(e -> {numBands = 1;});
+        MeasureMenu.getItems().get(2).setOnAction(e -> {numBands = 2;});
+        MeasureMenu.getItems().get(3).setOnAction(e -> {numBands = 3;});
+        MeasureMenu.getItems().get(4).setOnAction(e -> {numBands = 4;});
+        //maybe pair for bands, move circle out of marker func, set bands to variables 0 <0 if not set
         MenuBar TopMenuBar = new MenuBar();
         TopMenuBar.getMenus().addAll(TopMenu, Trafficmenu, MeasureMenu);
 
