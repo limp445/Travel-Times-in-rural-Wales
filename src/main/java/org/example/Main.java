@@ -82,7 +82,7 @@ public class Main extends Application {
                         new Label(destination.getKey().getDestinationType()),
                         new Label(DistanceMatrix.getTimeAsString(originLat, originLng, destination.getKey().getAddress())),
                         new Label(DistanceMatrix.getDistanceAsString(originLat, originLng, destination.getKey().getAddress())));
-                dest1.getStyleClass().add("dest1");
+                dest1.getStyleClass().add("destinations");
                 userDestinationsVbox.getChildren().add(dest1);
                 Pair<Double, Double> LatLongPair = DistanceMatrix.addressToLatLng(destination.getKey().getDestinationType());
                 engine.executeScript(
@@ -111,6 +111,7 @@ public class Main extends Application {
         Collections.addAll(welshCounties, "Anglesey", "Blaenau Gwent", "Bridgend", "Caerphilly", "Cardiff", "Carmarthenshire", "Ceredigion", "Conwy", "Denbighshire", "Flintshire", "Gwynedd", "Merthyr Tydfil", "Monmouthshire", "Neath Port Talbot", "Newport", "Pembrokeshire", "Powys", "Rhondda Cynon Taf", "Swansea", "Torfaen", "Vale of Glamorgan", "Wrexham");
         Destination.loadDestinationsFromCSV();// loads only once
         userDestinations.setVisible(false);
+        setBandsVbox.setVisible(false);
 
         //Map
         WebView webView = new WebView();
@@ -121,12 +122,12 @@ public class Main extends Application {
         //add destination pt1
 
         //add Destination pt1
-        VBox addDestination = new VBox(new Label("A---B"), new ComboBox<String>(FXCollections.observableList(welshCounties)),new Button("Enter"));
-        addDestination.getStyleClass().add("addDestination");
+        VBox addDestination = new VBox(new Label("Please select the county of your destination"), new ComboBox<String>(FXCollections.observableList(welshCounties)),new Button("Enter"));
+        addDestination.getStyleClass().add("addDestinationCounty");
         addDestination.setVisible(false);
         addDestination.setAlignment(Pos.CENTER);
         //add destination pt2
-        addDest2 = new VBox(new Label("A---B"), new ComboBox<String>(FXCollections.observableList(welshCounties)),new Button("Enter"));
+        addDest2 = new VBox(new Label("Please select your destination"), new ComboBox<String>(FXCollections.observableList(welshCounties)),new Button("Enter"));
         addDest2.setVisible(false);
         addDest2.setAlignment(Pos.CENTER);
         //error message set up
@@ -169,10 +170,10 @@ public class Main extends Application {
             }
         });
         //remove destination
-        removeBox = new VBox(new Label("Choose Destination"), new ComboBox<String>(removeDestList), new Button("Enter"));
+        removeBox = new VBox(new Label("Choose a Destination to remove"), new ComboBox<String>(removeDestList), new Button("Enter"));
         removeBox.setVisible(false);
         removeBox.setAlignment(Pos.CENTER);
-        removeBox.getStyleClass().add("addDestination");
+        removeBox.getStyleClass().add("removeDestination");
         removeBox.getChildren().get(2).setOnMousePressed(event -> {
             removeBox.setVisible(false);
             if (originLat == null || originLng == null) {
@@ -208,7 +209,7 @@ public class Main extends Application {
         VBox originVbox = new VBox(new Label("Type the address"), new TextField("Latitude"), new TextField("Longitude"), new Button("Enter"));
         originVbox.setAlignment(Pos.CENTER);
         originVbox.setVisible(false);
-        originVbox.getStyleClass().add("addDestination");
+        originVbox.getStyleClass().add("setOrigin");
         originVbox.getChildren().get(3).setOnMousePressed(event -> {
             originVbox.setVisible(false);
             TextField latTextF = (TextField) originVbox.getChildren().get(1);
@@ -283,7 +284,7 @@ public class Main extends Application {
 
 
         //StackPane
-        StackPane stackPane = new StackPane(webView, TopMenuBar, addDestination, addDest2, originVbox, userDestinations, noOriginError, removeBox);
+        StackPane stackPane = new StackPane(webView, TopMenuBar, addDestination, addDest2, originVbox, userDestinations, noOriginError, removeBox, setBandsVbox);
         StackPane.setAlignment(TopMenuBar, Pos.TOP_CENTER);
         StackPane.setAlignment(userDestinations, Pos.TOP_RIGHT);
         addDestination.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
@@ -293,6 +294,7 @@ public class Main extends Application {
         StackPane.setMargin(userDestinations, new Insets(50, 50, 0, 0));
         noOriginError.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         removeBox.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        setBandsVbox.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
 
 

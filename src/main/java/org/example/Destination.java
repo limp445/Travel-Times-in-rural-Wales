@@ -1,5 +1,6 @@
 package org.example;
 
+import javafx.scene.web.WebEngine;
 import javafx.util.Pair;
 
 import java.io.*;
@@ -11,6 +12,7 @@ public class Destination {
     private final String countyName;
     public static ArrayList<Pair<Destination, Integer>> destinationlist = new ArrayList<>();
     public static ArrayList<Destination> destinationsCSV = new ArrayList<>();
+    public static ArrayList<Pair<Integer, Integer>> bands = new ArrayList<>();
 
     public Destination(String destinationType, String address, String countyName) throws IOException {
         this.destinationType = destinationType;
@@ -79,5 +81,9 @@ public class Destination {
                             latlng.getValue(),
                             i+1
                     );
-
+                    engine.executeScript(placeBand);
+                }
+            }
+        }
+    }
 }

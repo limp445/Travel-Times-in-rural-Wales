@@ -53,9 +53,9 @@ public class DistanceMatrix {
     public static Integer getTimeAsInt(double lat, double lng, String address) throws IOException, InterruptedException {
         JsonObject response = DistanceMatrix.getJSONRequest(lat + "," + lng, address);
         if (traffic){
-            return response.getAsJsonObject("duration_in_traffic").get("value").getAsInt();
+            return response.getAsJsonObject("duration_in_traffic").get("value").getAsInt() /60;
         }else {
-            return response.getAsJsonObject("duration").get("value").getAsInt();
+            return response.getAsJsonObject("duration").get("value").getAsInt() / 60;
         }
     }
 

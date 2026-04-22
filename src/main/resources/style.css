@@ -5,7 +5,7 @@
     -fx-spacing: 5;
     -fx-margin: 200 0 0 0;
 }
-.dest1 {
+.destinations {
     -fx-background-color: lightblue;
     -fx-margin: 20 0 0 0;
     -fx-pref-width: 175;
@@ -17,11 +17,45 @@
 .menu-bar .label{
     -fx-font-size: 16px;
 }
-.addDestination {
-    -fx-background-color: red;
-    -fx-pref-width: 100;
-    -fx-pref-height: 100;
+.setOrigin {
+    -fx-background-color: white;
+    -fx-pref-width: 200;
+    -fx-pref-height: 160;
     -fx-padding: 10;
     -fx-spacing: 5;
-    -fx-border-color: lightgrey;
+    -fx-border-color: black;
 }
+.addDestination {
+    -fx-background-color: white;
+    -fx-pref-width: 260;
+    -fx-pref-height: 140;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-border-color: black;
+}
+.addDestinationCounty {
+    -fx-background-color: white;
+    -fx-pref-width: 260;
+    -fx-pref-height: 140;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-border-color: black;
+}
+.removeDestination {
+    -fx-background-color: white;
+    -fx-pref-width: 200;
+    -fx-pref-height: 120;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-border-color: black;
+}
+.setBands {
+    -fx-background-color: white;
+    -fx-font-size: 14px;
+    -fx-pref-width: 450;
+    -fx-pref-height: 140;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-border-color: black;
+}
+

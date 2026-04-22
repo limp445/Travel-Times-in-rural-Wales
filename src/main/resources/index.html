@@ -47,14 +47,40 @@
     }).addTo(map);
 
     let markers = []; // store all markers
+    //band in param// lightblue, blue, darkblue, purple
+    function placeBand(lat, lng, band) {
+        if (band === 1){
+            L.circleMarker([lat, lng], {
+                radius: 10,
+                color: "blue",
+                fillColor: "blue",
+                fillOpacity: 1
+            }).addTo(map)
+        } else if (band === 2){
+            L.circleMarker([lat, lng], {
+                radius: 8,
+                color: "darkblue",
+                fillColor: "darkblue",
+                fillOpacity: 1
+            }).addTo(map)
+        } else if (band === 3) {
+            L.circleMarker([lat, lng], {
+                radius: 10,
+                color: "purple",
+                fillColor: "purple",
+                fillOpacity: 1
+            }).addTo(map)
+        } else if (band === 4){
+            L.circleMarker([lat, lng], {
+                radius: 10,
+                color: "purple",
+                fillColor: "purple",
+                fillOpacity: 1
+            }).addTo(map)
+        }
 
+    }
     function placeMarker(lat, lng, address) {
-        L.circleMarker([lat, lng], {
-            radius: 10,
-            color: "red",
-            fillColor: "red",
-            fillOpacity: 0.8
-        }).addTo(map);
         const marker = L.marker([lat, lng])
             .addTo(map)
             .bindPopup(address);
