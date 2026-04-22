@@ -131,7 +131,6 @@ public class Main extends Application {
         addDest2.setVisible(false);
         addDest2.setAlignment(Pos.CENTER);
         //error message set up
-        noOriginError = new VBox(new Label("Please choose an origin before adding destinations"), new Button("OK"));
         noOriginError.setAlignment(Pos.CENTER);
         noOriginError.getStyleClass().add("addDestination");
         noOriginError.setVisible(false);
@@ -165,6 +164,10 @@ public class Main extends Application {
             });
             } else {
                 addDestination.setVisible(false);
+                noOriginError.getChildren().clear();
+                Label l = new Label("Please choose an origin before adding destinations");
+                Button b = new Button("OK");
+                noOriginError.getChildren().addAll(l,b);
                 noOriginError.setVisible(true);
                 noOriginError.getChildren().getLast().setOnMousePressed(event1 -> noOriginError.setVisible(false));
             }
@@ -176,7 +179,7 @@ public class Main extends Application {
         removeBox.getStyleClass().add("removeDestination");
         removeBox.getChildren().get(2).setOnMousePressed(event -> {
             removeBox.setVisible(false);
-            if (originLat == null || originLng == null) {
+            if ((originLat != null && originLng != null) && (!Destination.destinationlist.isEmpty())) {
                 ComboBox<String> cb = (ComboBox<String>) removeBox.getChildren().get(1);
                 String userRemove = cb.getValue();//try the combobox as destination
                 Destination removeDest = Destination.stringToDest(userRemove);
@@ -197,7 +200,20 @@ public class Main extends Application {
                     throw new RuntimeException(e);
                 }
                 updateScreenList(engine);
+            } else if ((Destination.destinationlist.isEmpty()) && (originLat != null && originLng != null)) {
+                removeBox.setVisible(false);
+                noOriginError.getChildren().clear();
+                Label l = new Label("Please choose a destination before attempting to remove anything");
+                Button b = new Button("OK");
+                noOriginError.getChildren().addAll(l,b);
+                noOriginError.setVisible(true);
+                noOriginError.getChildren().getLast().setOnMousePressed(event1 -> noOriginError.setVisible(false));
             } else{
+                removeBox.setVisible(false);
+                noOriginError.getChildren().clear();
+                Label l = new Label("Please choose an Origin before attempting to remove anything");
+                Button b = new Button("OK");
+                noOriginError.getChildren().addAll(l,b);
                 noOriginError.setVisible(true);
                 noOriginError.getChildren().getLast().setOnMousePressed(event1 -> noOriginError.setVisible(false));
             }
