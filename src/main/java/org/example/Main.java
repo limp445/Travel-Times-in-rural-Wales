@@ -34,6 +34,45 @@ public class Main extends Application {
     private VBox removeBox = new VBox();
     private ObservableList<String> removeDestList = FXCollections.observableArrayList();
     private int numBands = 0;
+    private VBox setBandsVbox = new VBox();
+    public void setBandedGroups(int numBands, WebEngine engine) {
+        setBandsVbox.getChildren().clear();
+        setBandsVbox.setAlignment(Pos.CENTER);
+        setBandsVbox.getStyleClass().add("setBands");
+        HBox setBands = new HBox(new Label("Choose Values for each band"));
+        setBands.setAlignment(Pos.CENTER);
+        setBandsVbox.getChildren().add(setBands);
+        for (int i = 0; i < numBands; i++) {
+            HBox minMax = new HBox(new Label("Band: " + (i+1)),new TextField("Min"), new TextField("Max"));
+            minMax.setAlignment(Pos.CENTER);
+            minMax.setSpacing(10);
+            setBandsVbox.getChildren().add(minMax);
+        }
+        HBox enter = new HBox(new Button("Enter"));
+        enter.setAlignment(Pos.CENTER);
+        setBandsVbox.getChildren().add(enter);
+        setBandsVbox.setVisible(true);
+        enter.getChildren().getFirst().setOnMousePressed(event -> {
+            setBandsVbox.setVisible(false);
+            Destination.bands.clear();
+            for (int i = 0; i < numBands; i++) {
+                HBox current = (HBox) setBandsVbox.getChildren().get(i + 1);
+                TextField min = (TextField) current.getChildren().get(1);
+                TextField max = (TextField) current.getChildren().get(2);
+                //if statement? method is in banded group store as map?
+                //arraylis of
+                Pair<Integer, Integer> addBand = new Pair<>(Integer.parseInt(min.getText()), Integer.parseInt(max.getText()));
+                Destination.bands.add(addBand);
+            }
+            try {
+                Destination.splitIntoBands(engine);
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+
+    }
     public void updateScreenList(WebEngine engine){
         VBox userDestinationsVbox = new VBox(10);
         Destination.destinationlist.sort(Comparator.comparingInt(Pair::getValue));
