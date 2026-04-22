@@ -175,26 +175,31 @@ public class Main extends Application {
         removeBox.getStyleClass().add("addDestination");
         removeBox.getChildren().get(2).setOnMousePressed(event -> {
             removeBox.setVisible(false);
-            ComboBox<String> cb = (ComboBox<String>) removeBox.getChildren().get(1);
-            String userRemove = cb.getValue();//try the combobox as destination
-            Destination removeDest = Destination.stringToDest(userRemove);
-            try {
-                Destination.destinationlist.remove(new Pair<>(removeDest, DistanceMatrix.getTimeAsInt(originLat, originLng, removeDest.getAddress())));
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
+            if (originLat == null || originLng == null) {
+                ComboBox<String> cb = (ComboBox<String>) removeBox.getChildren().get(1);
+                String userRemove = cb.getValue();//try the combobox as destination
+                Destination removeDest = Destination.stringToDest(userRemove);
+                try {
+                    Destination.destinationlist.remove(new Pair<>(removeDest, DistanceMatrix.getTimeAsInt(originLat, originLng, removeDest.getAddress())));
+                } catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                //func to complete userlist onscreen would be usefule
+                try {
+                    Pair<Double, Double> removeLatLng = DistanceMatrix.addressToLatLng(removeDest.getDestinationType());
+                    engine.executeScript(
+                            "removeMarkerByLatLng("
+                                    + removeLatLng.getKey() + ", "
+                                    + removeLatLng.getValue() + ")"
+                    );
+                } catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                updateScreenList(engine);
+            } else{
+                noOriginError.setVisible(true);
+                noOriginError.getChildren().getLast().setOnMousePressed(event1 -> noOriginError.setVisible(false));
             }
-            //func to complete userlist onscreen would be usefule
-            try {
-                Pair<Double, Double> removeLatLng = DistanceMatrix.addressToLatLng(removeDest.getDestinationType());
-                engine.executeScript(
-                        "removeMarkerByLatLng("
-                                + removeLatLng.getKey() + ", "
-                                + removeLatLng.getValue() + ")"
-                );
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            updateScreenList(engine);
 
 
         });
