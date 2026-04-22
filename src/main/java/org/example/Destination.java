@@ -68,5 +68,16 @@ public class Destination {
         }
         return list;
     }
+    public static void splitIntoBands(WebEngine engine) throws IOException, InterruptedException {
+        for (Pair<Destination, Integer> destination : destinationlist) {
+            for (int i = 0; i < bands.size(); i++) {
+                if (destination.getValue() >= bands.get(i).getKey() && destination.getValue() <= bands.get(i).getValue()) {
+                    Pair<Double, Double> latlng = DistanceMatrix.addressToLatLng(destination.getKey().getAddress());
+                    String placeBand = String.format(
+                            "placeBand(%f, %f, %d)",
+                            latlng.getKey(),
+                            latlng.getValue(),
+                            i+1
+                    );
 
 }
