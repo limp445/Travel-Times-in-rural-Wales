@@ -317,9 +317,7 @@ public class Main extends Application {
         noOriginError.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         removeBox.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         setBandsVbox.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-
-
-
+        //check
         Scene scene = new Scene(stackPane, 1000, 700);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/style.css")).toExternalForm());
         stage.setTitle("Leaflet Map in JavaFX");
