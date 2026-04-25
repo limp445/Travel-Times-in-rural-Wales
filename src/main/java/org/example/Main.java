@@ -132,7 +132,7 @@ public class Main extends Application {
         addDest2.setAlignment(Pos.CENTER);
         //error message set up
         noOriginError.setAlignment(Pos.CENTER);
-        noOriginError.getStyleClass().add("addDestination");
+        noOriginError.getStyleClass().add("error");
         noOriginError.setVisible(false);
         addDestination.getChildren().get(2).setOnMousePressed(event -> {
             if (originLat != null && originLng != null) {
@@ -254,8 +254,14 @@ public class Main extends Application {
         Menu Trafficmenu = new Menu("Traffic");
         if(DistanceMatrix.traffic){
             Trafficmenu.getItems().addAll(new MenuItem("Traffic ON"));
+            if (!Destination.destinationlist.isEmpty()){
+                updateScreenList(engine);
+            }
         }else {
             Trafficmenu.getItems().addAll(new MenuItem("Traffic OFF"));
+            if (!Destination.destinationlist.isEmpty()){
+                updateScreenList(engine);
+            }
         }
         Menu MeasureMenu = new Menu("Set Banded Groups");
         MeasureMenu.getItems().addAll(
