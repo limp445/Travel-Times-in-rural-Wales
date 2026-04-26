@@ -138,5 +138,14 @@
           styleClass="error">
         <!-- Error message inserted dynamically -->
     </VBox>
+    <HBox
+        fx:id="summaryBox"
+        alignment="BASELINE_CENTER"
+        spacing="10"
+        maxWidth="1000"
+        maxHeight="100"
+        visible="false"
+        styleClass="summary">
+    </HBox>
 
 </StackPane>
