@@ -289,6 +289,25 @@ public class MainController {
             }
         });
     }
+    public void summaryStats(){
+        //min max mean, range, iqr q1 and q3
+        summaryBox.getChildren().add(new Label("Summary Statistics"));
+        List<Integer> summary = Destination.destinationlist.stream().map(Pair::getValue).toList();
+        //min
+        Destination.destinationlist.sort(Comparator.comparingInt(Pair::getValue));
+        String min = Destination.destinationlist.getFirst().getKey().getDestinationType();
+        summaryBox.getChildren().add(new Label("Min: " + min));
+        //max
+        String max = Destination.destinationlist.getLast().getKey().getDestinationType();
+        summaryBox.getChildren().add(new Label("Max: " + max));
+        //mean
+        double mean = 0;
+        for (Pair<Destination, Integer> Destination : Destination.destinationlist){
+            mean = mean + Destination.getValue();
+        }
+        mean = mean / Destination.destinationlist.size();
+        summaryBox.getChildren().add(new Label("Average: " + mean));
+    }
 
 
 
