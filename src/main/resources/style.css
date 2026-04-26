@@ -1,13 +1,9 @@
 .userDestinations {
-    -fx-pref-height: 200;
-    -fx-pref-width: 175;
     -fx-padding: 10;
     -fx-spacing: 5;
-    -fx-margin: 200 0 0 0;
 }
 .destinations {
     -fx-background-color: lightblue;
-    -fx-margin: 20 0 0 0;
     -fx-pref-width: 175;
     -fx-font-size: 18px;
 }

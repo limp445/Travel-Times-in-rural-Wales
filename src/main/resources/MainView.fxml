@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.WebView?>
+<?import javafx.geometry.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.example.MainController">
+    <WebView fx:id="webView" StackPane.alignment="CENTER"/>
+    <MenuBar StackPane.alignment="TOP_CENTER">
+        <menus>
+            <Menu text="Functions">
+                <items>
+                    <MenuItem text="Add Destination" onAction="#handleAddDestination"/>
+                    <MenuItem text="Remove Destination" onAction="#handleRemoveDestination"/>
+                    <MenuItem text="Set Origin" onAction="#handleOrigin"/>
+                    <MenuItem text="Find Quickest Visit Route"/>
+                    <MenuItem text="Graph Data"/>
+                </items>
+            </Menu>
+
+            <Menu text="Traffic">
+                <items>
+                    <MenuItem text="Traffic ON" onAction="#handleTraffic"/>
+                </items>
+            </Menu>
+
+            <Menu text="Set Banded Groups">
+                <items>
+                    <MenuItem text="Reset Bands"/>
+                    <MenuItem text="1" onAction="#handleBand1"/>
+                    <MenuItem text="2" onAction="#handleBand2"/>
+                    <MenuItem text="3" onAction="#handleBand3"/>
+                    <MenuItem text="4" onAction="#handleBand4"/>
+                </items>
+            </Menu>
+        </menus>
+    </MenuBar>
+
+    <!-- USER DESTINATIONS LIST -->
+    <HBox fx:id="userDestinationsBox"
+          spacing="10"
+          visible="false"
+          StackPane.alignment="TOP_RIGHT"
+          styleClass="userDestinations">
+        <StackPane.margin>
+            <Insets top="50" right="50" bottom="0" left="0"/>
+        </StackPane.margin>
+    </HBox>
+
+    <!-- ADD DESTINATION (STEP 1) -->
+    <VBox fx:id="selectCountyBox"
+          alignment="CENTER"
+          spacing="10"
+          prefWidth="200"
+          prefHeight="160"
+          maxWidth="200"
+          maxHeight="160"
+          visible="false"
+          styleClass="addDestinationCounty">
+        <Label text="Please select the county of your destination"/>
+        <ComboBox fx:id="countyCombo"/>
+        <Button text="Enter" onAction="#selectCounty"/>
+    </VBox>
+
+    <!-- ADD DESTINATION (STEP 2) -->
+    <VBox fx:id="chooseDestinationBox"
+          alignment="CENTER"
+          spacing="10"
+          prefWidth="240"
+          prefHeight="160"
+          maxHeight="160"
+          maxWidth="240"
+          visible="false"
+          styleClass="addDestination">
+        <Label text="Choose Destination"/>
+        <ComboBox fx:id="destinationCombo"/>
+        <Button text="Enter" onAction="#selectDestination"/>
+    </VBox>
+
+    <!-- REMOVE DESTINATION -->
+    <VBox fx:id="removeBox"
+          alignment="CENTER"
+          spacing="10"
+          visible="false"
+          prefWidth="200"
+          prefHeight="160"
+          maxWidth="200"
+          maxHeight="160"
+          styleClass="removeDestination">
+        <Label text="Choose a Destination to remove"/>
+        <ComboBox fx:id="removeCombo"/>
+        <Button text="Enter" onAction="#selectRemove"/>
+    </VBox>
+
+    <!-- SET ORIGIN -->
+    <VBox fx:id="originBox"
+          alignment="CENTER"
+          spacing="10"
+          visible="false"
+          prefWidth="200"
+          prefHeight="160"
+          maxWidth="200"
+          maxHeight="160"
+          styleClass="setOrigin">
+        <Label text="Type the address"/>
+        <TextField fx:id="originLatField" promptText="Latitude"/>
+        <TextField fx:id="originLngField" promptText="Longitude"/>
+        <Button text="Enter" onAction="#selectOrigin"/>
+    </VBox>
+
+    <!-- SET BANDS -->
+    <VBox fx:id="bandBox"
+          alignment="CENTER"
+          spacing="10"
+          prefWidth="450"
+          prefHeight="140"
+          maxWidth="450"
+          maxHeight="140"
+          visible="false"
+          styleClass="setBands">
+        <Label text="Choose Values for each band"/>
+        <!-- Band fields will be added dynamically by controller -->
+    </VBox>
+
+    <!-- ERROR POPUP -->
+    <VBox fx:id="errorBox"
+          alignment="CENTER"
+          spacing="10"
+          maxWidth="380"
+          maxHeight="140"
+          visible="false"
+          styleClass="error">
+        <!-- Error message inserted dynamically -->
+    </VBox>
+
+</StackPane>

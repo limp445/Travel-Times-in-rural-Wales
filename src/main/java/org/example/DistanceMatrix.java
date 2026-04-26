@@ -25,7 +25,7 @@ public class DistanceMatrix {
                 + "&mode=driving"
                 + "&departure_time=now"
                 + "&traffic_model=best_guess"
-                + "&key=" + key;//needs changine to include traffic
+                + "&key=" + key;
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
