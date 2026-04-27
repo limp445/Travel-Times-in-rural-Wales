@@ -8,6 +8,7 @@
 <?import javafx.scene.web.WebView?>
 <?import javafx.geometry.*?>
 
+<?import com.sun.javafx.scene.control.ContextMenuContent.MenuBox?>
 <StackPane xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="org.example.MainController">
@@ -20,7 +21,6 @@
                     <MenuItem text="Remove Destination" onAction="#handleRemoveDestination"/>
                     <MenuItem text="Set Origin" onAction="#handleOrigin"/>
                     <MenuItem text="Find Quickest Visit Route"/>
-                    <MenuItem text="Graph Data"/>
                 </items>
             </Menu>
 
@@ -32,11 +32,16 @@
 
             <Menu text="Set Banded Groups">
                 <items>
-                    <MenuItem text="Reset Bands"/>
+                    <MenuItem text="Reset Bands" onAction="#handleBandReset"/>
                     <MenuItem text="1" onAction="#handleBand1"/>
                     <MenuItem text="2" onAction="#handleBand2"/>
                     <MenuItem text="3" onAction="#handleBand3"/>
                     <MenuItem text="4" onAction="#handleBand4"/>
+                </items>
+            </Menu>
+            <Menu text="Summary Stats">
+                <items>
+                    <MenuItem text="Show summary stats" onAction="#handleSummary"/>
                 </items>
             </Menu>
         </menus>
@@ -142,10 +147,11 @@
         fx:id="summaryBox"
         alignment="BASELINE_CENTER"
         spacing="10"
-        maxWidth="1000"
-        maxHeight="100"
+        maxWidth="800"
+        maxHeight="50"
         visible="false"
-        styleClass="summary">
+        styleClass="summary"
+        StackPane.alignment="BOTTOM_CENTER">
     </HBox>
 
 </StackPane>

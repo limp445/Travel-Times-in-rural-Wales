@@ -51,36 +51,43 @@
     function placeBand(lat, lng, band) {
         if (band === 1){
             L.circleMarker([lat, lng], {
-                radius: 10,
+                radius: 8,
                 color: "blue",
                 fillColor: "blue",
                 fillOpacity: 1
             }).addTo(map)
         } else if (band === 2){
             L.circleMarker([lat, lng], {
-                radius: 8,
+                radius: 10,
                 color: "darkblue",
                 fillColor: "darkblue",
                 fillOpacity: 1
             }).addTo(map)
         } else if (band === 3) {
             L.circleMarker([lat, lng], {
-                radius: 10,
+                radius: 12,
                 color: "purple",
                 fillColor: "purple",
                 fillOpacity: 1
             }).addTo(map)
         } else if (band === 4){
             L.circleMarker([lat, lng], {
-                radius: 10,
-                color: "purple",
-                fillColor: "purple",
+                radius: 14,
+                color: "darkpurple",
+                fillColor: "darkpurple",
                 fillOpacity: 1
             }).addTo(map)
         }
 
     }
-    function placeMarker(lat, lng, address) {
+    function placeMarker(lat, lng, address, time) {
+        const marker = L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup(address + ": " + time);
+
+        markers.push(marker);
+    }
+    function placeOrigin(lat, lng, address) {
         const marker = L.marker([lat, lng])
             .addTo(map)
             .bindPopup(address);
@@ -97,6 +104,13 @@
                 break;
             }
         }
+    }
+    function removeAllBands(){
+        map.eachLayer(layer => {
+            if (layer instanceof L.Circle || layer instanceof L.CircleMarker) {
+                map.removeLayer(layer);
+            }
+        });
     }
 </script>
 </body>

@@ -17,15 +17,14 @@ public class DistanceMatrixExample {
         return seconds%3600;
     }
     public static void main(String[] args) throws Exception {
-        String key = "hSDDUzoJ33JfbRdRDqaiLwoC4qEAkh5OxNFaTcJidQMOgcfHeQRdtC0sWbiyMtq1";
-
-        String url = "https://api.distancematrix.ai/maps/api/distancematrix/json"
-                + "?origins=" + java.net.URLEncoder.encode("71 Newton road, B43 6AD", StandardCharsets.UTF_8)
-                + "&destinations=" + java.net.URLEncoder.encode("Oxford, London", StandardCharsets.UTF_8)
-                + "&mode=driving"
-                + "&departure_time=now"
-                + "&traffic_model=best_guess"
-                + "&key=" + key;
+        String address = "Caerleon Rd Llanfrechfa Cwmbran";
+        String destinations = "Caerleon Rd Llanfrechfa Cwmbran";
+        String key1 = "hSDDUzoJ33JfbRdRDqaiLwoC4qEAkh5OxNFaTcJidQMOgcfHeQRdtC0sWbiyMtq1";
+        String key2 = "Mg0A04b5TpNTxXHsUGFkeZl7XC8DYosywmJ3jRmtacwYIHaoqHJlblxwKg8aUpLp";
+        //String traffic = """&departure_time=now" + "&traffic_model=best_guess""";
+        String url = "https://api.distancematrix.ai/maps/api/geocode/json"
+                + "?address=" + java.net.URLEncoder.encode(address, StandardCharsets.UTF_8)
+                + "&key=" + key2;
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -38,11 +37,22 @@ public class DistanceMatrixExample {
         String json = response.body();
 
         JsonObject root = JsonParser.parseString(json).getAsJsonObject();
+
+        JsonObject element = root.getAsJsonArray("result")
+                .get(0).getAsJsonObject()
+                .getAsJsonObject("geometry")
+                .getAsJsonObject("location");
+
+        double lat = element.get("lat").getAsDouble();
+        double lng = element.get("lng").getAsDouble();
+        System.out.println("Lat: " + lat);
+        System.out.println("Lng: " + lng);
+
+
+
         System.out.println(response.body());
     }
     public int getDistance(){
 
         return 0;
     }
-
-}

@@ -12,10 +12,8 @@ import javafx.scene.web.WebView;
 import javafx.util.Pair;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class MainController {
     @FXML private WebView webView;
@@ -26,6 +24,7 @@ public class MainController {
     @FXML private VBox bandBox;
     @FXML private VBox errorBox;
     @FXML private HBox userDestinationsBox;
+    @FXML private HBox summaryBox;
 
     @FXML private ComboBox<String> countyCombo;
     @FXML private ComboBox<String> destinationCombo;
@@ -66,6 +65,11 @@ public class MainController {
         originBox.setVisible(true);
     }
     @FXML
+    private void handleBandReset() {
+        hideAllPopups();
+        engine.executeScript("removeAllBands");
+    }
+    @FXML
     private void handleBand1() {
         hideAllPopups();
         bandBox.setVisible(true);
@@ -104,6 +108,16 @@ public class MainController {
             // turn traffic off
         }
     }
+    @FXML
+    private void handleSummary() {
+        if (Destination.destinationlist.isEmpty()){
+            showError("Please select a destination first");
+            return;
+        }
+        hideAllPopups();
+        summaryStats();
+        summaryBox.setVisible(true);
+    }
     //Set origin
     @FXML
     private void selectOrigin() {
@@ -119,7 +133,7 @@ public class MainController {
             originLng = Double.parseDouble(originLngField.getText());
 
             engine.executeScript(
-                    "placeMarker(" + originLat + ", " + originLng + ", 'Origin')"
+                    "placeOrigin(" + originLat + ", " + originLng + ", 'Origin')"
             );
 
             originBox.setVisible(false);
@@ -162,10 +176,8 @@ public class MainController {
             hideAllPopups();
             return;
         }
-
-        Destination dest = Destination.stringToDest(destName);
-
         try {
+            Destination dest = Destination.stringToDest(destName);
             int time = DistanceMatrix.getTimeAsInt(originLat, originLng, dest.getAddress());
             Destination.destinationlist.add(new Pair<>(dest, time));
 
@@ -173,7 +185,7 @@ public class MainController {
             chooseDestinationBox.setVisible(false);
 
         } catch (Exception e) {
-            showError("Error calculating travel time");
+            showError("Error calculating travel time: Check origin coordinates");
             hideAllPopups();
         }
     }
@@ -191,8 +203,7 @@ public class MainController {
         Destination dest = Destination.stringToDest(destName);
 
         try {
-            int time = DistanceMatrix.getTimeAsInt(originLat, originLng, dest.getAddress());
-            Destination.destinationlist.remove(new Pair<>(dest, time));
+            Destination.destinationlist.removeIf(remove -> remove.getKey().equals(dest));
             Pair<Double, Double> removeLatLng = DistanceMatrix.addressToLatLng(dest.getDestinationType());
             engine.executeScript(
                     "removeMarkerByLatLng("
@@ -207,22 +218,21 @@ public class MainController {
         }
     }
 
-    // -----------------------------
-    // Update UI List
-    // -----------------------------
 
+    // Update UI List
     private void updateDestinationList() throws IOException, InterruptedException {
         userDestinationsBox.getChildren().clear();
-        VBox vbox = new VBox(10);
+        VBox vbox = new VBox(20);
+        vbox.getChildren().add(new VBox(new Label("Top 6 Travel times")));
 
         Destination.destinationlist.sort(Comparator.comparingInt(Pair::getValue));
 
-        for (Pair<Destination, Integer> pair : Destination.destinationlist) {
-            Destination dest = pair.getKey();
-
+        for (int i = 0; i < 5; i++) {
+            Destination dest = Destination.destinationlist.get(i).getKey();
+            String timeStr = DistanceMatrix.getTimeAsString(originLat, originLng, dest.getAddress());
             VBox entry = new VBox(
                     new Label(dest.getDestinationType()),
-                    new Label(DistanceMatrix.getTimeAsString(originLat, originLng, dest.getAddress())),
+                    new Label(timeStr),
                     new Label(DistanceMatrix.getDistanceAsString(originLat, originLng, dest.getAddress()))
             );
 
@@ -232,7 +242,11 @@ public class MainController {
             try {
                 Pair<Double, Double> latlng = DistanceMatrix.addressToLatLng(dest.getDestinationType());
                 engine.executeScript(
-                        "placeMarker(" + latlng.getKey() + ", " + latlng.getValue() + ", '" + dest.getDestinationType() + "')"
+                        "placeMarker("
+                                + latlng.getKey() + ", "
+                                + latlng.getValue() + ", '"
+                                + dest.getDestinationType() + "', '"
+                                + timeStr + "')"
                 );
             } catch (Exception ignored) {}
         }
@@ -242,7 +256,10 @@ public class MainController {
         userDestinationsBox.setVisible(true);
     }
     public void setBandedGroups(int numBands) {
-
+        if (Destination.destinationlist.isEmpty()) {
+            showError("Please select destinations before setting banded groups");
+            return;
+        }
         bandBox.getChildren().clear();
         bandBox.setAlignment(Pos.CENTER);
 
@@ -275,6 +292,7 @@ public class MainController {
         enterButton.setOnMousePressed(event -> {
 
             Destination.bands.clear();
+            engine.executeScript("removeAllBands");
 
             for (int i = 0; i < numBands; i++) {
                 HBox current = (HBox) bandBox.getChildren().get(i + 1);
@@ -324,7 +342,6 @@ public class MainController {
         originBox.setVisible(false);
         removeBox.setVisible(false);
         bandBox.setVisible(false);
-        errorBox.setVisible(false);
     }
     private void showError(String message) {
         errorBox.getChildren().clear();

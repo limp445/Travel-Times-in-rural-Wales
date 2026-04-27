@@ -63,3 +63,12 @@
     -fx-spacing: 5;
     -fx-border-color: black;
 }
+.summary {
+    -fx-background-color: white;
+    -fx-font-size: 14px;
+    -fx-pref-width: 800;
+    -fx-pref-height: 100;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-border-color: black;
+}

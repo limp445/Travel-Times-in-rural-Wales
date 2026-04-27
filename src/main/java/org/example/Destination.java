@@ -86,7 +86,4 @@ public class Destination {
             }
         }
     }
-    public static void summarystats(){
-
-    }
 }
