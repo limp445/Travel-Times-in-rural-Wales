@@ -107,6 +107,13 @@ public class MainController {
     //Set origin
     @FXML
     private void selectOrigin() {
+        if (originLat != null && originLng != null) {
+            engine.executeScript(
+                    "removeMarkerByLatLng("
+                            + originLat + ", "
+                            + originLng + ")"
+            );
+        }
         try {
             originLat = Double.parseDouble(originLatField.getText());
             originLng = Double.parseDouble(originLngField.getText());
