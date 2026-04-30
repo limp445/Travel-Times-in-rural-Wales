@@ -333,6 +333,24 @@ public class MainController {
         mean = mean / Destination.destinationlist.size();
         summaryBox.getChildren().add(new Label("Average: " + mean));
     }
+    private void fastestRouteCal() throws IOException, InterruptedException {
+        summaryBox.setVisible(false);
+        WeightedGraph.Graph.populateGraph();
+        Pair<ArrayList<String>, Integer> routeTime = WeightedGraph.Graph.routeFind();
+        fastestRouteBox.getChildren().clear();
+        HBox routeRows = new HBox();
+        HBox routeRowsTime = new HBox();
+        routeRows.getChildren().addAll(new Label("Fastest Route: "), new Label(routeTime.getKey().toString()));
+        routeRowsTime.getChildren().addAll(new Label("Time for route: "), new Label(routeTime.getValue().toString() + " mins"));
+        System.out.print(routeTime.getKey().toString());
+        System.out.print(routeTime.getValue().toString());
+        routeRows.setAlignment(Pos.CENTER);routeRowsTime.setAlignment(Pos.CENTER);
+        fastestRouteBox.getChildren().addAll(routeRows, routeRowsTime);
+        fastestRouteBox.getStyleClass().add("route");
+        fastestRouteBox.setMouseTransparent(true);
+        fastestRouteBox.setVisible(true);
+
+    }
 
 
 
