@@ -19,6 +19,16 @@ public class Destination {
         this.address = address;
         this.countyName = countyName;
     }
+    public String getDestinationType() {
+        return destinationType;
+    }
+    public String getAddress() {
+        return address;
+    }
+
+    public String getCountyName() {
+        return countyName;
+    }
     public static void loadDestinationsFromCSV() throws IOException {
         InputStream is = Destination.class.getResourceAsStream("/Hospitals.csv");
         if (is == null) {
@@ -32,17 +42,6 @@ public class Destination {
             String[] data = line.split(",");
             destinationsCSV.add(new Destination(data[0], data[1], data[2]));
         }
-    }
-
-    public String getDestinationType() {
-        return destinationType;
-    }
-    public String getAddress() {
-        return address;
-    }
-
-    public String getCountyName() {
-        return countyName;
     }
 
     public static ArrayList<String> getDestinationsByCountyCsv(String countyName) throws IOException {

@@ -25,6 +25,7 @@ public class MainController {
     @FXML private VBox errorBox;
     @FXML private HBox userDestinationsBox;
     @FXML private HBox summaryBox;
+    @FXML private VBox fastestRouteBox;
 
     @FXML private ComboBox<String> countyCombo;
     @FXML private ComboBox<String> destinationCombo;
@@ -35,8 +36,8 @@ public class MainController {
 
     private WebEngine engine;
 
-    private Double originLat;
-    private Double originLng;
+    public Double originLat;
+    public Double originLng;
 
     private ArrayList<String> welshCounties = new ArrayList<>();
 
@@ -92,6 +93,16 @@ public class MainController {
         hideAllPopups();
         bandBox.setVisible(true);
         setBandedGroups(4);
+    }
+    @FXML
+    private void handlefastestRoute() {
+        try {
+            hideAllPopups();
+            fastestRouteBox.setVisible(true);
+            fastestRouteCal();
+        } catch (Exception e) {
+            showError("Error with fastest route, check origin and destinations");
+        }
     }
     @FXML
     private void handleTraffic(ActionEvent event) throws IOException, InterruptedException {
@@ -223,11 +234,13 @@ public class MainController {
     private void updateDestinationList() throws IOException, InterruptedException {
         userDestinationsBox.getChildren().clear();
         VBox vbox = new VBox(20);
-        vbox.getChildren().add(new VBox(new Label("Top 6 Travel times")));
+        VBox top6Label = new VBox(new Label("Top 6 Destinations by quickest travel time"));
+        top6Label.getStyleClass().add("destinations");
+        vbox.getChildren().add(top6Label);
 
         Destination.destinationlist.sort(Comparator.comparingInt(Pair::getValue));
-
-        for (int i = 0; i < 5; i++) {
+        int limit = Math.min(6, Destination.destinationlist.size());
+        for (int i = 0; i < limit; i++) {
             Destination dest = Destination.destinationlist.get(i).getKey();
             String timeStr = DistanceMatrix.getTimeAsString(originLat, originLng, dest.getAddress());
             VBox entry = new VBox(
@@ -235,12 +248,11 @@ public class MainController {
                     new Label(timeStr),
                     new Label(DistanceMatrix.getDistanceAsString(originLat, originLng, dest.getAddress()))
             );
-
             entry.getStyleClass().add("destinations");
             vbox.getChildren().add(entry);
 
             try {
-                Pair<Double, Double> latlng = DistanceMatrix.addressToLatLng(dest.getDestinationType());
+                Pair<Double, Double> latlng = DistanceMatrix.addressToLatLng(dest.getAddress());
                 engine.executeScript(
                         "placeMarker("
                                 + latlng.getKey() + ", "
@@ -250,13 +262,15 @@ public class MainController {
                 );
             } catch (Exception ignored) {}
         }
+        userDestinationsBox.setVisible(true);
         userDestinationsBox.getChildren().add(vbox);
         userDestinationsBox.setMouseTransparent(true);
         userDestinationsBox.setAlignment(Pos.TOP_RIGHT);
-        userDestinationsBox.setVisible(true);
+        //userDestinationsBox.setVisible(true);
     }
     public void setBandedGroups(int numBands) {
         if (Destination.destinationlist.isEmpty()) {
+            hideAllPopups();
             showError("Please select destinations before setting banded groups");
             return;
         }
@@ -305,7 +319,7 @@ public class MainController {
                 Destination.bands.add(addBand);
             }
 
-            bandBox.setVisible(false); // moved to AFTER reading fields
+            bandBox.setVisible(false);
 
             try {
                 Destination.splitIntoBands(engine);
@@ -315,6 +329,7 @@ public class MainController {
         });
     }
     public void summaryStats(){
+        fastestRouteBox.setVisible(false);
         //min max mean, range, iqr q1 and q3
         summaryBox.getChildren().add(new Label("Summary Statistics"));
         List<Integer> summary = Destination.destinationlist.stream().map(Pair::getValue).toList();
